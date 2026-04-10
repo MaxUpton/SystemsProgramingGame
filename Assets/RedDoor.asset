@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4d9686103ad0f8d45bc2ac67af7dc5f2, type: 3}
-  m_Name: KeyDoorBehavior
-  m_EditorClassIdentifier: Assembly-CSharp::TileBehaviorData
+  m_Name: RedDoor
+  m_EditorClassIdentifier: Assembly-CSharp::KeyDoorBehavior
   requiredKeyID: 0
   openedColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   openedLayer: 0
