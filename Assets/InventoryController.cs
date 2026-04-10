@@ -1,25 +1,45 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryController : MonoBehaviour
 {
-    public GameObject inventoryPanel; // The panel that contains the inventory UI
+    public GameObject inventoryPanel;
     public GameObject slotPrefab;
-    public GameObject[] itemPrefab;
-    public int numberOfSlots; // Number of inventory slots
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public int numberOfSlots = 24;
+
+    private PlayerInventory playerInventory;
+
     void Start()
     {
+        playerInventory = FindAnyObjectByType<PlayerInventory>();
+        RefreshUI();
+    }
+
+    public void RefreshUI()
+    {
+        foreach (Transform child in inventoryPanel.transform)
+            Destroy(child.gameObject);
+
         for (int i = 0; i < numberOfSlots; i++)
         {
             slot slot = Instantiate(slotPrefab, inventoryPanel.transform).GetComponent<slot>();
-            if (i < itemPrefab.Length)
+
+            if (i < playerInventory.items.Count)
             {
-                GameObject item = Instantiate(itemPrefab[i], slot.transform);
-                item.GetComponent<RectTransform>().anchoredPosition = Vector2.zero; // Center the item in the slot
-                slot.currentItem = item; // Assign the item to the slot
+                // Create item UI object
+                GameObject itemUI = new GameObject("ItemUI", typeof(RectTransform), typeof(Image), typeof(CanvasGroup), typeof(ItemDragHandler));
+
+                itemUI.transform.SetParent(slot.transform);
+                itemUI.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+
+                // Set sprite
+                itemUI.GetComponent<Image>().sprite = playerInventory.items[i].icon;
+
+                // Register item in slot
+                slot.currentItem = itemUI;
             }
         }
     }
-
-    
 }
+
+
