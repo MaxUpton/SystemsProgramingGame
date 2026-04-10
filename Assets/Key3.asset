@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d9686103ad0f8d45bc2ac67af7dc5f2, type: 3}
-  m_Name: RedDoor
-  m_EditorClassIdentifier: Assembly-CSharp::KeyDoorBehavior
-  requiredKeyID: 0
-  openedColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  openedLayer: 0
+  m_Script: {fileID: 11500000, guid: 599593aac3f272546ad02e5e43430fb2, type: 3}
+  m_Name: Key3
+  m_EditorClassIdentifier: Assembly-CSharp::KeyData
+  itemID: 3
+  icon: {fileID: 308928386, guid: 7c6f9e472b14f8c488996893798ba180, type: 3}
