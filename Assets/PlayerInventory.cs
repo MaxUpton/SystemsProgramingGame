@@ -8,7 +8,7 @@ public class PlayerInventory : MonoBehaviour
 
     public List<ItemData> items = new List<ItemData>();
 
-    private void Start()
+    private void Awake()
     {
         foreach (var item in startingItems)
             items.Add(item);
