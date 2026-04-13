@@ -2,8 +2,10 @@ using UnityEngine;
 
 public class QuestionInteractable : MonoBehaviour
 {
-    public string question = "What is the password?";
+    public string question = "test change of message";
     public ItemData rewardItem;
+
+    public string userawnser;
 
     private void OnTriggerStay2D(Collider2D other)
     {
@@ -18,7 +20,7 @@ public class QuestionInteractable : MonoBehaviour
         PlayerInventory playerInventory = FindAnyObjectByType<PlayerInventory>();
         Debug.Log("Player answered: " + answer);
 
-        if (answer.ToLower() == "test")
+        if (answer.ToLower() == userawnser.ToLower())
         {
             Debug.Log("Correct answer!");
             // Do something: open door, give item, etc.
