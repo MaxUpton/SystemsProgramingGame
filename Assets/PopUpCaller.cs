@@ -2,16 +2,25 @@ using UnityEngine;
 
 public class QuestionInteractable : MonoBehaviour
 {
-    public string question = "test change of message";
+    public string question = "What is your favorite color?";
     public ItemData rewardItem;
 
     public string userawnser;
+
+    public bool isRoom2Console = false;
 
     private void OnTriggerStay2D(Collider2D other)
     {
         if (other.CompareTag("Player") && Input.GetKeyDown(KeyCode.E))
         {
-            PopupController.Instance.ShowInputPopup(question, OnAnswerSubmitted);
+            if (isRoom2Console)
+            {
+                PopupController.Instance.ShowInputPopup2(question, OnAnswerSubmitted);
+            }
+            else
+            {
+                PopupController.Instance.ShowInputPopup(question, OnAnswerSubmitted);
+            }
         }
     }
 
