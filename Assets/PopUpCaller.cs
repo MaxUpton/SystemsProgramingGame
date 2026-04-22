@@ -5,21 +5,34 @@ public class QuestionInteractable : MonoBehaviour
     public string question = "What is your favorite color?";
     public ItemData rewardItem;
 
-    public string userawnser;
+    public string userAnswer;
 
-    public bool isRoom2Console = false;
+    public bool isMultipleChoice = false;
+    public string choiceA;
+    public string choiceB;
+    public string choiceC;
+    public string choiceD;
 
     private void OnTriggerStay2D(Collider2D other)
     {
         if (other.CompareTag("Player") && Input.GetKeyDown(KeyCode.E))
         {
-            if (isRoom2Console)
+            if (isMultipleChoice)
             {
-                PopupController.Instance.ShowInputPopup2(question, OnAnswerSubmitted);
+                PopupController.Instance.ShowPopup(
+                    PopupType.MultipleChoice,
+                    question,
+                    OnAnswerSubmitted,
+                    choiceA, choiceB, choiceC, choiceD
+                );
             }
             else
             {
-                PopupController.Instance.ShowInputPopup(question, OnAnswerSubmitted);
+                PopupController.Instance.ShowPopup(
+                    PopupType.TextInput,
+                    question,
+                    OnAnswerSubmitted
+                );
             }
         }
     }
@@ -29,24 +42,20 @@ public class QuestionInteractable : MonoBehaviour
         PlayerInventory playerInventory = FindAnyObjectByType<PlayerInventory>();
         Debug.Log("Player answered: " + answer);
 
-        if (answer.ToLower() == userawnser.ToLower())
+        if (answer.ToLower().Trim() == userAnswer.ToLower().Trim())
         {
             Debug.Log("Correct answer!");
-            // Do something: open door, give item, etc.
+
             if (rewardItem != null)
             {
                 playerInventory.items.Add(rewardItem);
-                
             }
         }
         else
         {
             Debug.Log("Incorrect answer.");
         }
-        FindAnyObjectByType<InventoryController>().RefreshUI();
 
+        FindAnyObjectByType<InventoryController>().RefreshUI();
     }
 }
-
-
-

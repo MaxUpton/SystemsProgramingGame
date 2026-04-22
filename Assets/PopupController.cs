@@ -1,121 +1,161 @@
 ﻿using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
+using System;
+
+public enum PopupType
+{
+    TextInput,
+    MessageOnly,
+    MultipleChoice
+}
 
 public class PopupController : MonoBehaviour
 {
     public static PopupController Instance;
 
+    [Header("Main Popup Panel")]
     public GameObject popupPanel;
-    public GameObject popupPanel2;
+
+    [Header("Shared UI")]
     public TMP_Text messageText;
     public TMP_InputField inputField;
-    public TMP_InputField inputField2;
-    public TMP_Text messageText2;
-    
-    private System.Action<string> onSubmit;
-    private bool usingPopup2 = false;
+
+    [Header("Multiple Choice UI")]
+    public Button buttonA;
+    public Button buttonB;
+    public Button buttonC;
+    public Button buttonD;
+    public TMP_Text buttonAText;
+    public TMP_Text buttonBText;
+    public TMP_Text buttonCText;
+    public TMP_Text buttonDText;
+
+    private PopupType activeType;
+    private Action<string> onSubmit;
 
     private void Awake()
     {
         Instance = this;
+
         popupPanel.SetActive(false);
-        popupPanel2.SetActive(false);
         inputField.gameObject.SetActive(false);
-        inputField2.gameObject.SetActive(false);
+
+        buttonA.gameObject.SetActive(false);
+        buttonB.gameObject.SetActive(false);
+        buttonC.gameObject.SetActive(false);
+        buttonD.gameObject.SetActive(false);
     }
 
-    public void ShowInputPopup(string message, System.Action<string> callback)
+
+    // Unified popup entry point
+
+    public void ShowPopup(
+        PopupType type,
+        string message,
+        Action<string> callback = null,
+        string a = null, string b = null, string c = null, string d = null)
     {
-        messageText.text = message;
+        activeType = type;
+        onSubmit = callback;
+
         popupPanel.SetActive(true);
-        popupPanel2.SetActive(false);
 
-        inputField.text = "";
-        inputField.gameObject.SetActive(true);
-        inputField.Select();
-        inputField.ActivateInputField();
+        // Reset UI
+        inputField.gameObject.SetActive(false);
+        buttonA.gameObject.SetActive(false);
+        buttonB.gameObject.SetActive(false);
+        buttonC.gameObject.SetActive(false);
+        buttonD.gameObject.SetActive(false);
 
-        onSubmit = callback;
+        messageText.text = message;
 
-        // ⭐ Pause the game
+        switch (type)
+        {
+            case PopupType.TextInput:
+                inputField.text = "";
+                inputField.gameObject.SetActive(true);
+                inputField.Select();
+                inputField.ActivateInputField();
+                break;
+
+            case PopupType.MessageOnly:
+                break;
+
+            case PopupType.MultipleChoice:
+                SetupChoiceButtons(a, b, c, d);
+                break;
+        }
+
         Time.timeScale = 0f;
     }
-    
-    public void ShowInputPopup2(string message, System.Action<string> callback)
+
+    /// Helper to setup multiple choice buttons
+    private void SetupChoiceButtons(string a, string b, string c, string d)
     {
-        usingPopup2 = true;
-        messageText2.text = message;
-        popupPanel2.SetActive(true);
-        popupPanel.SetActive(false);
-        inputField2.text = "";
-        inputField2.gameObject.SetActive(true);
-        inputField2.Select();
-        inputField2.ActivateInputField();
+        buttonA.gameObject.SetActive(true);
+        buttonB.gameObject.SetActive(true);
+        buttonC.gameObject.SetActive(true);
+        buttonD.gameObject.SetActive(true);
 
-        onSubmit = callback;
+        buttonAText.text = a;
+        buttonBText.text = b;
+        buttonCText.text = c;
+        buttonDText.text = d;
 
-        // ⭐ Pause the game
-        Time.timeScale = 0f;
-    }
-    
+        buttonA.onClick.RemoveAllListeners();
+        buttonB.onClick.RemoveAllListeners();
+        buttonC.onClick.RemoveAllListeners();
+        buttonD.onClick.RemoveAllListeners();
 
-    private void Update()
-    {
-        if (usingPopup2)
-        {
-            if (popupPanel2.activeSelf && inputField2.gameObject.activeSelf)
-            {
-                if (Input.GetKeyDown(KeyCode.Return))
-                {
-                    SubmitInput();
-                }
-            }
-        }
-        else
-        {
-            if (popupPanel.activeSelf && inputField.gameObject.activeSelf)
-            {
-                if (Input.GetKeyDown(KeyCode.Return))
-                {
-                    SubmitInput();
-                }
-            }
-        }
-        // if (popupPanel.activeSelf && inputField.gameObject.activeSelf || popupPanel2.activeSelf && inputField2.gameObject.activeSelf)
-        // {
-        //     if (Input.GetKeyDown(KeyCode.Return))
-        //     {
-        //         SubmitInput();
-        //     }
-        // }
+        buttonA.onClick.AddListener(() => SubmitChoice(a));
+        buttonB.onClick.AddListener(() => SubmitChoice(b));
+        buttonC.onClick.AddListener(() => SubmitChoice(c));
+        buttonD.onClick.AddListener(() => SubmitChoice(d));
     }
 
+    //submit for text input
     public void SubmitInput()
     {
-        string text = "";
+        if (activeType != PopupType.TextInput)
+            return;
 
-        if (usingPopup2)
-        {
-            text = inputField2.text;
-            inputField2.gameObject.SetActive(false);
-            popupPanel2.SetActive(false);
-            usingPopup2 = false;
-        }
-        else
-        {
-            text = inputField.text;
-            inputField.gameObject.SetActive(false);
-            popupPanel.SetActive(false);
-        }
-
-        inputField.gameObject.SetActive(false);
-        popupPanel.SetActive(false);
-        popupPanel2.SetActive(false);
-
-        // ⭐ Unpause the game
-        Time.timeScale = 1f;
-
+        string text = inputField.text;
+        ClosePopup();
         onSubmit?.Invoke(text);
+    }
+
+    //submit for multiple choice
+    private void SubmitChoice(string choice)
+    {
+        ClosePopup();
+        onSubmit?.Invoke(choice);
+    }
+
+    // Common close logic
+    private void ClosePopup()
+    {
+        popupPanel.SetActive(false);
+        inputField.gameObject.SetActive(false);
+
+        buttonA.gameObject.SetActive(false);
+        buttonB.gameObject.SetActive(false);
+        buttonC.gameObject.SetActive(false);
+        buttonD.gameObject.SetActive(false);
+
+        Time.timeScale = 1f;
+    }
+
+    // Listen for Enter key in text input mode
+    private void Update()
+    {
+        if (activeType == PopupType.TextInput &&
+            popupPanel.activeSelf &&
+            inputField.gameObject.activeSelf &&
+            Input.GetKeyDown(KeyCode.Return))
+        {
+            SubmitInput();
+        }
     }
 }
 
