@@ -31,6 +31,9 @@ public class PopupController : MonoBehaviour
     public TMP_Text buttonCText;
     public TMP_Text buttonDText;
 
+    [Header("Message Only Close Button")]
+    public Button closeButton;
+
     private PopupType activeType;
     private Action<string> onSubmit;
 
@@ -45,11 +48,13 @@ public class PopupController : MonoBehaviour
         buttonB.gameObject.SetActive(false);
         buttonC.gameObject.SetActive(false);
         buttonD.gameObject.SetActive(false);
+
+        closeButton.gameObject.SetActive(false);
+        closeButton.onClick.RemoveAllListeners();
+        closeButton.onClick.AddListener(ClosePopup);
     }
 
-
-    // Unified popup entry point
-
+    //main method to show the popup, configures the UI based on the type and provided parameters, and sets up the callback for submission
     public void ShowPopup(
         PopupType type,
         string message,
@@ -67,6 +72,7 @@ public class PopupController : MonoBehaviour
         buttonB.gameObject.SetActive(false);
         buttonC.gameObject.SetActive(false);
         buttonD.gameObject.SetActive(false);
+        closeButton.gameObject.SetActive(false);
 
         messageText.text = message;
 
@@ -80,6 +86,7 @@ public class PopupController : MonoBehaviour
                 break;
 
             case PopupType.MessageOnly:
+                closeButton.gameObject.SetActive(true);
                 break;
 
             case PopupType.MultipleChoice:
@@ -90,7 +97,7 @@ public class PopupController : MonoBehaviour
         Time.timeScale = 0f;
     }
 
-    /// Helper to setup multiple choice buttons
+    //helper to setup multiple choice buttons, assigns text and click listeners based on provided options
     private void SetupChoiceButtons(string a, string b, string c, string d)
     {
         buttonA.gameObject.SetActive(true);
@@ -114,7 +121,7 @@ public class PopupController : MonoBehaviour
         buttonD.onClick.AddListener(() => SubmitChoice(d));
     }
 
-    //submit for text input
+    //submit for text input popups, sends the entered text back to the caller
     public void SubmitInput()
     {
         if (activeType != PopupType.TextInput)
@@ -125,14 +132,14 @@ public class PopupController : MonoBehaviour
         onSubmit?.Invoke(text);
     }
 
-    //submit for multiple choice
+    //submit for multiple choice buttons, sends the chosen option back to the caller
     private void SubmitChoice(string choice)
     {
         ClosePopup();
         onSubmit?.Invoke(choice);
     }
 
-    // Common close logic
+    //closes the popup and resets all UI elements, called by close button and after submission
     private void ClosePopup()
     {
         popupPanel.SetActive(false);
@@ -142,11 +149,12 @@ public class PopupController : MonoBehaviour
         buttonB.gameObject.SetActive(false);
         buttonC.gameObject.SetActive(false);
         buttonD.gameObject.SetActive(false);
+        closeButton.gameObject.SetActive(false);
 
         Time.timeScale = 1f;
     }
 
-    // Listen for Enter key in text input mode
+    //ensure that pressing Enter submits the input for text input popups
     private void Update()
     {
         if (activeType == PopupType.TextInput &&
@@ -158,4 +166,3 @@ public class PopupController : MonoBehaviour
         }
     }
 }
-

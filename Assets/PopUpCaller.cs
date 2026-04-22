@@ -7,7 +7,16 @@ public class QuestionInteractable : MonoBehaviour
 
     public string userAnswer;
 
-    public bool isMultipleChoice = false;
+    public enum QuestionType
+    {
+        TextInput,
+        MultipleChoice,
+        MessageOnly
+    }
+
+    public QuestionType questionType = QuestionType.TextInput;
+
+    [Header("Multiple Choice Options")]
     public string choiceA;
     public string choiceB;
     public string choiceC;
@@ -17,28 +26,40 @@ public class QuestionInteractable : MonoBehaviour
     {
         if (other.CompareTag("Player") && Input.GetKeyDown(KeyCode.E))
         {
-            if (isMultipleChoice)
+            switch (questionType)
             {
-                PopupController.Instance.ShowPopup(
-                    PopupType.MultipleChoice,
-                    question,
-                    OnAnswerSubmitted,
-                    choiceA, choiceB, choiceC, choiceD
-                );
-            }
-            else
-            {
-                PopupController.Instance.ShowPopup(
-                    PopupType.TextInput,
-                    question,
-                    OnAnswerSubmitted
-                );
+                case QuestionType.TextInput:
+                    PopupController.Instance.ShowPopup(
+                        PopupType.TextInput,
+                        question,
+                        OnAnswerSubmitted
+                    );
+                    break;
+
+                case QuestionType.MultipleChoice:
+                    PopupController.Instance.ShowPopup(
+                        PopupType.MultipleChoice,
+                        question,
+                        OnAnswerSubmitted,
+                        choiceA, choiceB, choiceC, choiceD
+                    );
+                    break;
+
+                case QuestionType.MessageOnly:
+                    PopupController.Instance.ShowPopup(
+                        PopupType.MessageOnly,
+                        question
+                    );
+                    break;
             }
         }
     }
 
     private void OnAnswerSubmitted(string answer)
     {
+        if (questionType == QuestionType.MessageOnly)
+            return;
+
         PlayerInventory playerInventory = FindAnyObjectByType<PlayerInventory>();
         Debug.Log("Player answered: " + answer);
 
