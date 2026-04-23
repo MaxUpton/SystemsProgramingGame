@@ -9,13 +9,32 @@ public class InteractableKeyDoor : MonoBehaviour
     private SpriteRenderer sr;
     private Collider2D col;
     private bool isOpen = false;
+    private bool playerInRange = false;
+    private GameObject currentPlayer;
+
 
     private void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
         col = GetComponent<Collider2D>();
     }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerInRange = true;
+            currentPlayer = other.gameObject;
+        }
+    }
 
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerInRange = false;
+            currentPlayer = null;
+        }
+    }
     public void Interact(GameObject interactor)
     {
         if (isOpen) return;
@@ -43,11 +62,15 @@ public class InteractableKeyDoor : MonoBehaviour
 
         Debug.Log("Door opened with key: " + behavior.requiredKeyID);
     }
-    private void OnTriggerStay2D(Collider2D other)
+    private void Update()
     {
-        if (other.CompareTag("Player") && Input.GetKeyDown(KeyCode.E))
+        if (!playerInRange || isOpen)
         {
-            GetComponent<InteractableKeyDoor>().Interact(other.gameObject);
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Interact(currentPlayer);
         }
     }
 

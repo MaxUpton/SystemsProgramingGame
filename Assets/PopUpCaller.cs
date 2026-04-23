@@ -22,10 +22,36 @@ public class QuestionInteractable : MonoBehaviour
     public string choiceC;
     public string choiceD;
 
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        if (other.CompareTag("Player") && Input.GetKeyDown(KeyCode.E))
+    private bool playerInRange = false;
+    private bool isPopupOpen = false;
+
+    private void OnTriggerEnter2D(Collider2D other) 
+    { 
+        if (other.CompareTag("Player"))
         {
+            playerInRange = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerInRange = false;
+        }
+    }
+
+
+    private void Update()
+    {
+        if (!playerInRange || isPopupOpen)
+        {
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            isPopupOpen = true;
+
             switch (questionType)
             {
                 case QuestionType.TextInput:
@@ -50,6 +76,7 @@ public class QuestionInteractable : MonoBehaviour
                         PopupType.MessageOnly,
                         question
                     );
+                    isPopupOpen = false;
                     break;
             }
         }
@@ -57,6 +84,8 @@ public class QuestionInteractable : MonoBehaviour
 
     private void OnAnswerSubmitted(string answer)
     {
+        isPopupOpen = false;
+
         if (questionType == QuestionType.MessageOnly)
             return;
 
