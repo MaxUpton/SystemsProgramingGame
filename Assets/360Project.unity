@@ -1233,7 +1233,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16563ce904561d34ebd1b2688a76bb87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  question: STCF = process with shortest current time to completion is removed first.
+  question: The pre-emptive version of Shortest Job First (SJF) scheduling is called
+    Shortest Remaining Time First (SRTF). In SRTF, the process with the least time
+    left to finish is selected to run. The running process continues until it finishes
+    or a new process with a shorter remaining time arrives, ensuring the fastest
+    finishing process always gets priority.
   rewardItem: {fileID: 0}
   userAnswer: 
   questionType: 2
@@ -2539,7 +2543,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16563ce904561d34ebd1b2688a76bb87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  question: SJF = Shortest job is removed first
+  question: The shortest job first (SJF) or shortest job next, is a scheduling policy
+    that selects the waiting process with the smallest execution time to execute
+    next. SJN, also known as Shortest Job Next (SJN), can be preemptive or non-preemptive. 
+    \n Shortest Job first has the advantage of having a minimum average waiting time
+    among all scheduling algorithms.\nIt is a Greedy Algorithm\nSJF can be used in
+    specialized environments where accurate estimates of running time are available.
   rewardItem: {fileID: 0}
   userAnswer: 
   questionType: 2
@@ -18126,7 +18135,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16563ce904561d34ebd1b2688a76bb87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  question: 'A socket allows for connection of applications.  '
+  question: 'Sockets are one of the core components used by the program to access
+    the network to communicate with other processes/nodes over the network. It is
+    simply a combination of an IP address and a port number that acts as an endpoint
+    for Communication over a network using sockets. \n One socket acts as a server,
+    listening on a specific IP address and port. \n Another socket acts as a client,
+    initiating a connection to the server. \n '
   rewardItem: {fileID: 0}
   userAnswer: 
   questionType: 2
@@ -18332,7 +18346,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16563ce904561d34ebd1b2688a76bb87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  question: Memory accesses = number of inputs.
+  question: Memory accesses = number of inputs.\n\nCaching is a concept that involves
+    storing frequently accessed data in a location that is easily and quickly accessible.
+    The purpose of caching is to improve the performance and efficiency of a system
+    by reducing the amount of time it takes to access frequently accessed data.
   rewardItem: {fileID: 0}
   userAnswer: 
   questionType: 2
@@ -18989,7 +19006,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16563ce904561d34ebd1b2688a76bb87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  question: FCFS = First to arrive is removed first
+  question: 'First Come, First Serve (FCFS) is one of the simplest types of CPU scheduling
+    algorithms. It is exactly what it sounds like: processes are attended to in the
+    order in which they arrive in the ready queue, much like customers lining up
+    at a grocery store.'
   rewardItem: {fileID: 0}
   userAnswer: 
   questionType: 2
