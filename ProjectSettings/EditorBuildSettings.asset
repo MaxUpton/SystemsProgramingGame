@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/360Project.unity
     guid: e372eb480a5b75f49af270e8305a7c33
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+    path: Assets/Game Over Screen.unity
+    guid: 2a1774412f031354aa4c7c9cc94c025b
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: f852aa3ef8b9e1144b458105c017e23a, type: 3}
