@@ -9,6 +9,11 @@ public class MainMenuScript : MonoBehaviour
         SceneManager.LoadScene("360Project");
     }
 
+    public void loadMainMenu()
+    {
+        SceneManager.LoadScene("main menu");
+    }
+
     // Update is called once per frame
     public void endGame()
     {
