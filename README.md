@@ -1,5 +1,7 @@
 Project overview: We wanted to create a video game that was essentially a systems programming themed escape room, where the user would find clues and solve puzzles to move through a series of 4 challenge rooms.
 
+Build Guide: download project and open A Farming Game unity project
+
 4 themes:
 
 Room 1 = Caching and memory
